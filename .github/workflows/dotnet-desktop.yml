@@ -23,6 +23,6 @@ jobs:
       - name: Project Build
         run: dotnet build --configuration Release
       - name: ls
-        run: ls && ls Amazon.IonHashDotnet && ls Amazon.IonHashDotnet/bin && Amazon.IonHashDotnet/bin/Release
+        run: ls && ls Amazon.IonHashDotnet && ls Amazon.IonHashDotnet/bin && ls Amazon.IonHashDotnet/bin/Release
       - name: Project Test
         run: dotnet test --configuration Release --no-build --no-restore --verbosity normal 

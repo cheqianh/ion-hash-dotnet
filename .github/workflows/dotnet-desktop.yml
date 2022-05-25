@@ -31,7 +31,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
-          path: Amazon.IonHashDotnet\
+          path: ..\
 
   release:
     name: Release
@@ -63,7 +63,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
-          path: Amazon.IonHashDotnet/
+          path: ./
 
 #       - name: Sign
 #         run: |

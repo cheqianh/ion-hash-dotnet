@@ -27,6 +27,11 @@ jobs:
         run: dotnet build --configuration Release
       - name: Unit test
         run: dotnet test --configuration Release --no-build --no-restore --verbosity normal
+      - name: Upload package to GitHub Actions
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: Amazon.IonHashDotnet\
 
   release:
     name: Release
@@ -35,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ windows-latest ]
+        os: [ ubuntu-latest ]
         dotnet: ['2.1']
 
     steps:
@@ -49,19 +54,20 @@ jobs:
           role-external-id: ${{ secrets.AWS_ROLE_EXTERNAL_ID }}
           role-duration-seconds: 900
 
-      - name: Git Checkout
-        uses: actions/checkout@v2
-        with:
-          submodules: recursive
-
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet }}
+          
+      - name: Download built artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
+          path: Amazon.IonHashDotnet/
 
       - name: Sign
         run: |
-          dotnet build --configuration Release
+          ls
           # Push unsigned DLL to S3
           version_id=$( aws s3api put-object --bucket ${{ secrets.AWS_UNSIGNED_BUCKET }} --key ${{ secrets.AWS_KEY }} --body Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll  --acl bucket-owner-full-control | jq '.VersionId' )
           job_id=""

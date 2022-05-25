@@ -27,10 +27,11 @@ jobs:
         run: dotnet build --configuration Release
       - name: Unit test
         run: dotnet test --configuration Release --no-build --no-restore --verbosity normal
-      - name: Upload package to GitHub Actions
-        uses: actions/upload-artifact@v3
+      - name: Cache artifacts
+        id: cache-ddl
+        uses: actions/cache@v3
         with:
-          name: artifacts
+          key: artifacts/
           path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
          
   sign:
@@ -58,12 +59,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet }}
-          
-      - name: Download built artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-          path: ./Amazon.IonHashDotnet.dll
 
       - name: Sign
         run: |

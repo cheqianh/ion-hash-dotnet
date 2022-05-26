@@ -61,11 +61,8 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
           
       - name: Cache artifacts
-        id: cache-ddl
-        uses: actions/cache@v3
-        with:
-          key: artifacts/
-          path: ./Amazon.IonHashDotnet.dll
+        if: ${{ steps.cache-npm.outputs.cache-hit == false }}
+        run: ls
           
       - run: ls
 

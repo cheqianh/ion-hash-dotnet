@@ -31,7 +31,7 @@ jobs:
         id: cache-ddl
         uses: actions/cache@v3
         with:
-          key: artifacts/
+          key: artifacts
           path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
          
   sign:
@@ -61,10 +61,17 @@ jobs:
           dotnet-version: ${{ matrix.dotnet }}
           
       - name: Cache artifacts
-        if: ${{ steps.cache-npm.outputs.cache-hit == false }}
+        id: cache-ddl-2
+        uses: actions/cache@v3
+        with:
+          key: artifacts
+          path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
+          
+          
+      - name: Cache artifacts
+        if: ${{ steps.cache-npm-2.outputs.cache-hit == false }}
         run: ls
           
-      - run: ls
 
       - name: Sign
         run: |

@@ -33,6 +33,13 @@ jobs:
         with:
           key: artifacts
           path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
+          
+      - name: Cache artifacts
+        id: cache-ddl-2
+        uses: actions/cache@v3
+        with:
+          key: artifacts
+          path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
          
   sign:
     name: Sign

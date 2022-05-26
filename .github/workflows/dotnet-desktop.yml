@@ -48,7 +48,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ windows-latest ]
         dotnet: ['2.1']
 
     steps:
@@ -67,22 +67,16 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet }}
           
-      - name: Cache artifacts
-        id: cache-ddl-2
-        uses: actions/cache@v3
+      - name: Git Checkout
+        uses: actions/checkout@v2
         with:
-          key: artifacts
-          path: Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll
-          
-          
-      - name: Cache artifacts
-        if: ${{ steps.cache-npm-2.outputs.cache-hit == false }}
-        run: ls
+          submodules: recursive
           
 
       - name: Sign
+        shell: bash
         run: |
-          ls
+          dotnet build --configuration Release
 #           # Push unsigned DLL to S3
 #           version_id=$( aws s3api put-object --bucket ${{ secrets.AWS_UNSIGNED_BUCKET }} --key ${{ secrets.AWS_KEY }} --body Amazon.IonHashDotnet/bin/Release/netstandard2.0/Amazon.IonHashDotnet.dll  --acl bucket-owner-full-control | jq '.VersionId' )
 #           job_id=""

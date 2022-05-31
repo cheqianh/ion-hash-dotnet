@@ -67,4 +67,4 @@ jobs:
       - name: release
         run: |
           dotnet pack --configuration Release --no-build
-          dir D:\a\ion-hash-dotnet\ion-hash-dotnet\Amazon.IonHashDotnet\bin\Release\Amazon.IonHashDotnet.*.nupkg
+          dotnet nuget push Amazon.IonHashDotnet/bin/Release/Amazon.IonHashDotnet.*.nupkg --api-key 123123 --source https://api.nuget.org/v3/index.json
